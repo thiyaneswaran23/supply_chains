@@ -6,7 +6,7 @@ export default function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    // Check for cached user session on system launch
+   
     const token = localStorage.getItem('token');
     const username = localStorage.getItem('username');
     const role = localStorage.getItem('role');

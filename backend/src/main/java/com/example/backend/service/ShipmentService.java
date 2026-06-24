@@ -29,20 +29,17 @@ public class ShipmentService {
     }
 
     public Shipment createShipment(Shipment shipment) {
-        // 🛡️ SAFELY VALIDATE THE NOT-NULL PROPERTY BEFORE COMMITTING TO HIBERNATE
+
         if (shipment.getEstimatedDelivery() == null) {
-            // If the UI drops the field, default it seamlessly to 3 days from now
+
             shipment.setEstimatedDelivery(LocalDate.now().plusDays(3));
         }
 
-        // Populate standard transaction generation timestamps
         if (shipment.getCreatedAt() == null) {
             shipment.setCreatedAt(LocalDateTime.now());
         }
-
-        // Assign a mock AI evaluation risk percentage variable if Python metrics are tracking
         if (shipment.getDelayProbabilityPct() == null) {
-            shipment.setDelayProbabilityPct(0.15); // 15% Standard Baseline Risk
+            shipment.setDelayProbabilityPct(0.15);
         }
 
         return shipmentRepository.save(shipment);
@@ -54,11 +51,11 @@ public class ShipmentService {
 
         shipment.setStatus(newStatus.toUpperCase());
 
-        // Enterprise Workflow Logic: Trigger Auto-Replenishment upon confirmation of delivery
+
         if ("DELIVERED".equalsIgnoreCase(newStatus)) {
             shipment.setActualDelivery(LocalDate.now());
 
-            // 🛡️ SAFE CHECK: Verify relational entities exist before triggering inventory adjustments
+
             if (shipment.getWarehouse() != null && shipment.getProduct() != null) {
                 Inventory inventory = inventoryRepository.findByWarehouseWarehouseIdAndProductProductId(
                         shipment.getWarehouse().getWarehouseId(),
@@ -72,7 +69,6 @@ public class ShipmentService {
                     return newInventory;
                 });
 
-                // Replenish physical stock counts seamlessly
                 inventory.setCurrentStock(inventory.getCurrentStock() + shipment.getQuantity());
                 inventoryRepository.save(inventory);
             }

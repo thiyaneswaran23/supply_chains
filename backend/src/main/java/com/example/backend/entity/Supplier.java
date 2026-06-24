@@ -22,18 +22,15 @@ public class Supplier {
         private String phone;
 
         @Column(nullable = false, length = 100)
-        private String location; // City/Country used for ML distance profiles
+        private String location;
 
         @Column(name = "risk_score")
-        private Double riskScore = 0.0; // Pushed down from the Python ML layer
+        private Double riskScore = 0.0;
 
         @Column(name = "reliability_tier", length = 20)
-        private String reliabilityTier = "UNKNOWN"; // 'LOW_RISK', 'MEDIUM_RISK', 'HIGH_RISK'
-
-        // --- Constructors ---
+        private String reliabilityTier = "UNKNOWN";
         public Supplier() {}
 
-        // --- Getters and Setters ---
         public Long getSupplierId() { return supplierId; }
         public void setSupplierId(Long supplierId) { this.supplierId = supplierId; }
 

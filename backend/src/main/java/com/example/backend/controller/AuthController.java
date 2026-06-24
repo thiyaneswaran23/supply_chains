@@ -32,7 +32,7 @@ public class AuthController {
 
         User newUser = new User(
                 request.getUsername(),
-                passwordEncoder.encode(request.getPassword()), // Hash it before saving to database!
+                passwordEncoder.encode(request.getPassword()),
                 request.getRole().toUpperCase()
         );
 

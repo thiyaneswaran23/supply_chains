@@ -37,10 +37,10 @@ public class Shipment {
         private String destination;
 
         @Column(name = "transport_mode", nullable = false, length = 20)
-        private String transportMode; // 'AIR', 'ROAD', 'SEA', 'RAIL'
+        private String transportMode;
 
         @Column(nullable = false, length = 30)
-        private String status = "PENDING"; // 'PENDING', 'IN_TRANSIT', 'DELAYED', 'DELIVERED'
+        private String status = "PENDING";
 
         @Column(name = "estimated_delivery", nullable = false)
         private LocalDate estimatedDelivery;
@@ -49,7 +49,7 @@ public class Shipment {
         private LocalDate actualDelivery;
 
         @Column(name = "delay_probability_pct")
-        private Double delayProbabilityPct = 0.0; // Pushed from Python Delay Classifier Model
+        private Double delayProbabilityPct = 0.0;
 
         @Column(name = "created_at", updatable = false)
         private LocalDateTime createdAt;

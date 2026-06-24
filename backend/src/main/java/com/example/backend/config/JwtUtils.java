@@ -8,11 +8,9 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
-
-    // Symmetric key generated securely for HS256 validation
-    private final String SECRET_KEY = "supplylens_secure_jwt_secret_key_must_be_long_enough_for_sha_256";
+    private final String SECRET_KEY = "supplylens_secure_rmk_2027_thiyaneswaran";
     private final Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
-    private final int EXPIRATION_MS = 86400000; // 24 Hours validity
+    private final int EXPIRATION_MS = 86400000;
 
     public String generateToken(String username, String role) {
         return Jwts.builder()

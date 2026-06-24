@@ -25,11 +25,9 @@ public class Product {
 
         @Column(nullable = false, precision = 10, scale = 2)
         private BigDecimal price;
-
-        // --- Constructors ---
         public Product() {}
 
-        // --- Getters and Setters ---
+
         public Long getProductId() { return productId; }
         public void setProductId(Long productId) { this.productId = productId; }
 

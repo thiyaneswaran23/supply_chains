@@ -31,8 +31,6 @@ public class JwtFilter extends OncePerRequestFilter {
             if (jwtUtils.validateToken(token)) {
                 String username = jwtUtils.getUsernameFromToken(token);
                 String role = jwtUtils.getRoleFromToken(token);
-
-                // Setup internal credentials context mapped to roles
                 UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
                         username, null, Collections.singletonList(new SimpleGrantedAuthority("ROLE_" + role))
                 );

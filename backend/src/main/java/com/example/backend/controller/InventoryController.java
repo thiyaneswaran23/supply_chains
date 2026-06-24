@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/inventories")
-@CrossOrigin(origins = "*") // Cross-origin handling so your React UI port can connect cleanly
+@CrossOrigin(origins = "*")
 public class InventoryController {
 
     @Autowired

@@ -20,7 +20,7 @@ public class User {
         private String passwordHash;
 
         @Column(nullable = false, length = 30)
-        private String role; // 'SUPPLY_CHAIN_MANAGER' or 'WAREHOUSE_SUPERVISOR'
+        private String role;
 
         @Column(name = "created_at", updatable = false)
         private LocalDateTime createdAt;
@@ -29,8 +29,6 @@ public class User {
         protected void onCreate() {
             this.createdAt = LocalDateTime.now();
         }
-
-        // --- Constructors ---
         public User() {}
 
         public User(String username, String passwordHash, String role) {
@@ -39,7 +37,6 @@ public class User {
             this.role = role;
         }
 
-        // --- Getters and Setters ---
         public Long getUserId() { return userId; }
         public void setUserId(Long userId) { this.userId = userId; }
 

@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Ship, PlusCircle } from 'lucide-react';
 
 export default function DispatchTab({ newShipment, setNewShipment, handleCreateShipment, fetchForecast }) {
-  // Local state for registering a new product catalog item
+
   const [productForm, setProductForm] = useState({ name: '', sku: '', category: '', price: '' });
 
   const getAuthHeader = () => ({
@@ -24,7 +24,7 @@ export default function DispatchTab({ newShipment, setNewShipment, handleCreateS
       setProductForm({ name: '', sku: '', category: '', price: '' });
       alert("📦 New Product successfully cataloged in core database!");
       
-      // If a parent refresh callback exists, reload the dropdown options list
+    
       if (fetchForecast) window.location.reload(); 
     } catch (err) {
       console.error("Failed to commit product catalog definition:", err);
@@ -35,8 +35,7 @@ export default function DispatchTab({ newShipment, setNewShipment, handleCreateS
   return (
     <div className="space-y-8 max-w-5xl mx-auto animate-fadeIn">
       <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-        
-        {/* FORM 1: BRAND NEW PRODUCT REGISTRATION CATALOG (1/3 Width) */}
+      
         <div className="p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl space-y-4">
           <div className="flex items-center space-x-2 border-b border-slate-800 pb-3">
             <PlusCircle className="text-emerald-500" size={20} />
@@ -66,7 +65,6 @@ export default function DispatchTab({ newShipment, setNewShipment, handleCreateS
           </form>
         </div>
 
-        {/* FORM 2: LOGISTICS PIPELINE SHIPMENT MANIFEST DISPATCH (2/3 Width) */}
         <div className="md:col-span-2 p-6 bg-slate-900 border border-slate-800 rounded-2xl shadow-xl space-y-6">
           <div className="flex items-center space-x-2 border-b border-slate-800 pb-4">
             <Ship className="text-blue-500" size={22} />

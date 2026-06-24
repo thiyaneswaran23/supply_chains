@@ -18,31 +18,31 @@ def read_root():
 
 @app.post("/predict/forecast")
 def forecast_demand(payload: List[Dict[str, Any]]):
-    print("\n" + "📊" * 25)
-    print("📥 INCOMING REQUEST: DEMAND FORECAST")
-    print(f"📦 Total History Data Points Received: {len(payload)}")
+    
+    print("INCOMING REQUEST: DEMAND FORECAST")
+    print(f"Total History Data Points Received: {len(payload)}")
     if payload:
-        print(f"🕒 Sample History Point (Latest): {payload[-1]}")
+        print(f"Sample History Point (Latest): {payload[-1]}")
         
     predicted_units = predictor.predict_demand_forecast(payload)
     
-    print(f"🔮 AI FORECAST DEMAND RESULT: {predicted_units} Units")
-    print("📊" * 25 + "\n")
+    print(f"AI FORECAST DEMAND RESULT: {predicted_units} Units")
+  
     return {"forecasted_demand_units": predicted_units}
 
 @app.post("/predict/delay")
 def predict_delay(payload: DelayRequest):
-    print("\n" + "🚚" * 25)
-    print("📥 INCOMING REQUEST: TRANSIT DELAY RISK")
-    print(f"📍 Route Manifest: {payload.origin} ➔ {payload.destination}")
-    print(f"🔀 Transport Mode: {payload.transport_mode}")
-    print(f"📏 Route Distance:  {payload.distance_km} km")
+    
+    print("INCOMING REQUEST: TRANSIT DELAY RISK")
+    print(f"Route Manifest: {payload.origin} --- {payload.destination}")
+    print(f"Transport Mode: {payload.transport_mode}")
+    print(f" Route Distance:  {payload.distance_km} km")
     
     probability = predictor.predict_transit_delay(
         distance_km=payload.distance_km,
         transport_mode=payload.transport_mode
     )
     
-    print(f"🎯 AI TRANSIT DELAY PROBABILITY: {probability * 100:.2f}% Risk Status")
-    print("🚚" * 25 + "\n")
+    print(f"AI TRANSIT DELAY PROBABILITY: {probability * 100:.2f}% Risk Status")
+  
     return {"delay_probability": probability}

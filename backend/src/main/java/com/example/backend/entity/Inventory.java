@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Inventory {
 
 
-        @Id // Now Hibernate will recognize this perfectly!
+        @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)
         @Column(name = "inventory_id")
         private Long inventoryId;

@@ -16,7 +16,7 @@ public class AnalyticsController {
     @Autowired
     private MLIntegrationService mlIntegrationService;
 
-    @GetMapping("/forecast/{productId}") // MUST BE @GetMapping
+    @GetMapping("/forecast/{productId}")
     public ResponseEntity<List<Map<String, Object>>> getProductDemandForecast(@PathVariable Long productId) {
         return ResponseEntity.ok(mlIntegrationService.getDemandForecast(productId));
     }

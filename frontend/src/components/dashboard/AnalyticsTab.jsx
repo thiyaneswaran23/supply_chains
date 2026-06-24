@@ -5,8 +5,6 @@ import { TrendingUp, RefreshCw } from 'lucide-react';
 
 export default function AnalyticsTab({ forecastData, selectedProductId, setSelectedProductId, fetchForecast, loadingForecast }) {
   const [products, setProducts] = useState([]);
-
-  // Fetch the entire active catalog from your MySQL database via Spring Boot
   useEffect(() => {
     const fetchCatalog = async () => {
       try {
@@ -37,7 +35,7 @@ export default function AnalyticsTab({ forecastData, selectedProductId, setSelec
             value={selectedProductId} 
             onChange={(e) => setSelectedProductId(Number(e.target.value))}
           >
-            {/* 🟢 DYNAMIC MAPPING: Render exactly what exists inside your MySQL product table */}
+        
             {products.map(p => (
               <option key={p.productId} value={p.productId} className="bg-slate-900 text-slate-200">
                 [{p.category}] {p.name} (SKU: {p.sku})

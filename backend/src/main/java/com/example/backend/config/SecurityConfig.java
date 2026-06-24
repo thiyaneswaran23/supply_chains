@@ -32,56 +32,49 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                // 1. Explicitly hook the robust custom CORS configuration bean defined below
+
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-                // 2. Disable Cross-Site Request Forgery blocks for token-based stateless operations
+
                 .csrf(csrf -> csrf.disable())
 
-                // 3. Set standard session creation policy guidelines to stateless tracking rules
+
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                // 4. Role-Based Access Control matrix paths
-                // Inside your SecurityFilterChain method:
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/inventories/**").hasAnyRole("SUPPLY_CHAIN_MANAGER", "WAREHOUSE_SUPERVISOR")
                         .requestMatchers(HttpMethod.PUT, "/api/inventories/**").hasRole("WAREHOUSE_SUPERVISOR")
                         .requestMatchers(HttpMethod.POST, "/api/shipments").hasRole("SUPPLY_CHAIN_MANAGER")
-
                         .requestMatchers("/api/shipments/deliver/**").hasAnyRole("SUPPLY_CHAIN_MANAGER", "WAREHOUSE_SUPERVISOR")
                         .requestMatchers("/api/shipments/**").hasAnyRole("SUPPLY_CHAIN_MANAGER", "WAREHOUSE_SUPERVISOR")
-
-                        // 🟢 ADD THIS LINE: Allows both roles to access the POST route for delay scoring
                         .requestMatchers(HttpMethod.POST, "/api/analytics/predict-delay/**").hasAnyRole("SUPPLY_CHAIN_MANAGER", "WAREHOUSE_SUPERVISOR")
 
                         .requestMatchers("/api/analytics/**").hasRole("SUPPLY_CHAIN_MANAGER")
                         .anyRequest().authenticated()
                 )
 
-                // 5. Inject custom state decryption logic pipeline before standard authorization sweeps
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }
 
-    // Explicit cross-origin handling source to dissolve preflight precheck network exceptions
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // Expressly allow React Vite local dev server port
+        config.setAllowedOrigins(List.of("http://localhost:5173"));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("Authorization", "Content-Type", "Cache-Control"));
         config.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", config); // Apply globally to all Spring backend controllers
+        source.registerCorsConfiguration("/**", config);
         return source;
     }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder(); // Cryptographic multi-round salting algorithm
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
