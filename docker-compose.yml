@@ -1,0 +1,68 @@
+version: '3.8'
+
+services:
+  
+  db:
+    image: mysql:8.0
+    container_name: supplylens_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: supplylens
+      MYSQL_ROOT_PASSWORD: rootpassword
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - supplylens-net
+
+ 
+  python-ml:
+    build: ./ml
+    container_name: supplylens_ml_api
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=mysql+pymysql://root:rootpassword@db:3306/supplylens
+    depends_on:
+      - db
+    networks:
+      - supplylens-net
+
+  
+  java-backend:
+    build: ./backend
+    container_name: supplylens_java_api
+    restart: always
+    ports:
+      - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:mysql://db:3306/supplylens?useSSL=false&allowPublicKeyRetrieval=true
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=rootpassword
+      - ML_SERVICE_URL=http://python-ml:8000
+    depends_on:
+      - db
+      - python-ml
+    networks:
+      - supplylens-net
+
+  react-frontend:
+    build: ./frontend
+    container_name: supplylens_ui
+    ports:
+      - "5173:5173"
+    stdin_open: true
+    tty: true
+    depends_on:
+      - java-backend
+    networks:
+      - supplylens-net
+
+volumes:
+  mysql_data:
+
+networks:
+  supplylens-net:
+    driver: bridge
